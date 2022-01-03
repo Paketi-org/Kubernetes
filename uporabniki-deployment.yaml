@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uporabniki-deployment
+  labels:
+    app: uporabniki
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: uporabniki
+  template:
+    metadata:
+      labels:
+        app: uporabniki
+    spec:
+      containers:
+        - image: tp7220/uporabniki:latest
+          name: uporabniki
+          env:
+            - name: DATABASE_IP
+              value: "postgres-uporabniki"
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: PGDATABASE
+              value: "paketiorg"
+            - name: PGUSER
+              value: "postgres"
+            - name: PGPASSWORD
+              value: "postgres"
+            - name: FLUENT_IP
+              value: "TODO"
+            - name: FLUENT_PORT
+              value: "1000"
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: uporabniki-service
+spec:
+  type: NodePort
+  ports:
+  - port: 40000
+    protocol: TCP
+    targetPort: 5003
+  selector:
+    app: uporabniki

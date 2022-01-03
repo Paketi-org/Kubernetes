@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - image: mmorato/frontend:latest
+          name: frontend
+          ports:
+          - containerPort: 5001
+            name: server
+            protocol: TCP
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: NodePort
+  ports:
+  - port: 50000
+    protocol: TCP
+    targetPort: server
+  selector:
+    app: frontend
