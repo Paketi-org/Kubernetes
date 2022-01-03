@@ -13,9 +13,16 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: minimal-service
+            name: frontend-service
             port:
-              number: 60000
+              number: 30000
+      - path: /narocniki/*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: uporabniki-service
+            port:
+              number: 40000
       - path: /narocniki
         pathType: ImplementationSpecific
         backend:
@@ -23,6 +30,7 @@ spec:
             name: uporabniki-service
             port:
               number: 40000
+
       - path: /placila
         pathType: ImplementationSpecific
         backend:
@@ -30,3 +38,24 @@ spec:
             name: placila-service
             port:
               number: 50000
+      - path: /placila/*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: placila-service
+            port:
+              number: 50000
+      - path: /ponujeni_prevozi
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: vozniki-service
+            port:
+              number: 41000
+      - path: /ponujeni_prevozi/*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: vozniki-service
+            port:
+              number: 41000

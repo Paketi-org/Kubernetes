@@ -32,6 +32,10 @@ spec:
               value: "TODO"
             - name: FLUENT_PORT
               value: "1000"
+            - name: GRPC_SERVER_IP
+              value: "grpcstreznik-service"
+            - name: GRPC_SERVER_PORT
+              value: "31000"
 
 --- 
 
