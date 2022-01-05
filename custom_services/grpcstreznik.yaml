@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpcstreznik-deployment
+  labels:
+    app: grpcstreznik
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: grpcstreznik
+  template:
+    metadata:
+      labels:
+        app: grpcstreznik
+    spec:
+      containers:
+        - image: tp7220/grpcstreznik:latest
+          name: grpcstreznik
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpcstreznik-service
+spec:
+  type: NodePort
+  ports:
+  - port: 31000
+    protocol: TCP
+    targetPort: 50051
+  selector:
+    app: grpcstreznik

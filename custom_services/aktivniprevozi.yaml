@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aktivniprevozi-deployment
+  labels:
+    app: aktivniprevozi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aktivniprevozi
+  template:
+    metadata:
+      labels:
+        app: aktivniprevozi
+    spec:
+      containers:
+        - image: mmorato/aktivniprevozi:latest
+          name: aktivniprevozi
+          env:
+            - name: DATABASE_IP
+              value: "postgres-uporabniki"
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: PGDATABASE
+              value: "paketiorg"
+            - name: PGUSER
+              value: "postgres"
+            - name: PGPASSWORD
+              value: "postgres"
+            - name: UPORABNIKI_IP
+              value: "http://uporabniki-service:40000/"
+            - name: PLACILA_IP
+              value: "http://placila-service:50000/"
+            - name: VOZNIKI_IP
+              value: "http://vozniki-service:41000/"
+            - name: ISKALCI_IP
+              value: "http://iskalci-service:42000/"
+            - name: FLUENT_IP
+              value: "TODO"
+            - name: FLUENT_PORT
+              value: "1000"
+            - name: CONSUL_IP
+              value: "hashicorp-consul-server"
+            - name: CONSUL_PORT
+              value: "8500"          
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: aktivniprevozi-service
+spec:
+  type: NodePort
+  ports:
+  - port: 43000
+    protocol: TCP
+    targetPort: 5011
+  selector:
+    app: aktivniprevozi

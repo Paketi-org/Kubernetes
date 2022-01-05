@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stranke-deployment
+  labels:
+    app: stranke
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: stranke
+  template:
+    metadata:
+      labels:
+        app: stranke
+    spec:
+      containers:
+        - image: mmorato/strankevmesnik:latest
+          name: stranke
+          env:
+            - name: DATABASE_IP
+              value: "postgres-uporabniki"
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: PGDATABASE
+              value: "paketiorg"
+            - name: PGUSER
+              value: "postgres"
+            - name: PGPASSWORD
+              value: "postgres"
+            - name: UPORABNIKI_IP
+              value: "http://uporabniki-service:40000/"
+            - name: PLACILA_IP
+              value: "http://placila-service:50000/"
+            - name: FLUENT_IP
+              value: "TODO"
+            - name: FLUENT_PORT
+              value: "1000"        
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: stranke-service
+spec:
+  type: NodePort
+  ports:
+  - port: 42000
+    protocol: TCP
+    targetPort: 5007
+  selector:
+    app: stranke

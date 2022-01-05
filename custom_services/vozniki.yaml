@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vozniki-deployment
+  labels:
+    app: vozniki
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vozniki
+  template:
+    metadata:
+      labels:
+        app: vozniki
+    spec:
+      containers:
+        - image: tp7220/voznikivmesnik:latest
+          name: vozniki
+          env:
+            - name: DATABASE_IP
+              value: "postgres-uporabniki"
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: PGDATABASE
+              value: "paketiorg"
+            - name: PGUSER
+              value: "postgres"
+            - name: PGPASSWORD
+              value: "postgres"
+            - name: UPORABNIKI_IP
+              value: "http://uporabniki-service:40000"
+            - name: PLACILA_IP
+              value: "http://placila-service:50000"
+            - name: FLUENT_IP
+              value: "TODO"
+            - name: FLUENT_PORT
+              value: "1000"
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 5001
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 5001
+            initialDelaySeconds: 10
+            periodSeconds: 10              
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: vozniki-service
+spec:
+  type: NodePort
+  ports:
+  - port: 41000
+    protocol: TCP
+    targetPort: 5001
+  selector:
+    app: vozniki

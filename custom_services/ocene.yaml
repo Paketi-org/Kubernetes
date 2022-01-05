@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocene-deployment
+  labels:
+    app: ocene
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ocene
+  template:
+    metadata:
+      labels:
+        app: ocene
+    spec:
+      containers:
+        - image: mmorato/ocene:latest
+          name: ocene
+          env:
+            - name: DATABASE_IP
+              value: "postgres-uporabniki"
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: PGDATABASE
+              value: "paketiorg"
+            - name: PGUSER
+              value: "postgres"
+            - name: PGPASSWORD
+              value: "postgres"
+            - name: UPORABNIKI_IP
+              value: "http://uporabniki-service:40000/"
+            - name: FLUENT_IP
+              value: "TODO"
+            - name: FLUENT_PORT
+              value: "1000"         
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: ocene-service
+spec:
+  type: NodePort
+  ports:
+  - port: 44000
+    protocol: TCP
+    targetPort: 5013
+  selector:
+    app: ocene
