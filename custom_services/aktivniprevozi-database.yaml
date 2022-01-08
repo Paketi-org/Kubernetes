@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-aktivniprevozi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-aktivniprevozi
+  template:
+    metadata:
+      labels:
+        app: postgres-aktivniprevozi
+    spec:
+      containers:
+        - image: postgres:13
+          name: postgres-aktivniprevozi
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+            - name: POSTGRES_DB
+              value: "paketiorg"
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-aktivniprevozi
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: postgres-aktivniprevozi

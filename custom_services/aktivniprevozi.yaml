@@ -19,7 +19,7 @@ spec:
           name: aktivniprevozi
           env:
             - name: DATABASE_IP
-              value: "postgres-uporabniki"
+              value: "postgres-aktivniprevozi"
             - name: DATABASE_PORT
               value: "5432"
             - name: PGDATABASE

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-stranke
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-stranke
+  template:
+    metadata:
+      labels:
+        app: postgres-stranke
+    spec:
+      containers:
+        - image: postgres:13
+          name: postgres-stranke
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+            - name: POSTGRES_DB
+              value: "paketiorg"
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-stranke
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: postgres-stranke

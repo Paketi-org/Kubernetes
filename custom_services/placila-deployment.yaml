@@ -19,7 +19,7 @@ spec:
           name: placila
           env:
             - name: DATABASE_IP
-              value: "postgres-uporabniki"
+              value: "postgres-placila"
             - name: DATABASE_PORT
               value: "5432"
             - name: PGDATABASE
@@ -28,6 +28,8 @@ spec:
               value: "postgres"
             - name: PGPASSWORD
               value: "postgres"
+            - name: AKTIVNI_IP
+              value: "http://aktivniprevozi-service:43000/"
             - name: FLUENT_IP
               value: "TODO"
             - name: FLUENT_PORT

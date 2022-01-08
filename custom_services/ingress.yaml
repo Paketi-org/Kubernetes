@@ -30,7 +30,20 @@ spec:
             name: uporabniki-service
             port:
               number: 40000
-
+      - path: /loto
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: uporabniki-service
+            port:
+              number: 40000
+      - path: /lestvica
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: uporabniki-service
+            port:
+              number: 40000
       - path: /placila
         pathType: ImplementationSpecific
         backend:
@@ -96,6 +109,20 @@ spec:
             port:
               number: 44000
       - path: /ocene/*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ocene-service
+            port:
+              number: 44000
+      - path: /pritozbe
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ocene-service
+            port:
+              number: 44000
+      - path: /pritozbe/*
         pathType: ImplementationSpecific
         backend:
           service:

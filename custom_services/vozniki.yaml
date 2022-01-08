@@ -19,7 +19,7 @@ spec:
           name: vozniki
           env:
             - name: DATABASE_IP
-              value: "postgres-uporabniki"
+              value: "postgres-vozniki"
             - name: DATABASE_PORT
               value: "5432"
             - name: PGDATABASE
@@ -36,6 +36,10 @@ spec:
               value: "TODO"
             - name: FLUENT_PORT
               value: "1000"
+            - name: CONSUL_IP
+              value: "hashicorp-consul-server"
+            - name: CONSUL_PORT
+              value: "8500"   
           livenessProbe:
             httpGet:
               path: /healthcheck

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-placila
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-placila
+  template:
+    metadata:
+      labels:
+        app: postgres-placila
+    spec:
+      containers:
+        - image: postgres:13
+          name: postgres-placila
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+            - name: POSTGRES_DB
+              value: "paketiorg"
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-placila
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: postgres-placila
